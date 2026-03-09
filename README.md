@@ -29,3 +29,9 @@ install.packages(ComplexHeatmap)
 install.packages(UpSetR)
 
 Execution --> me poia seira trexw ta R scripts
+
+1. Radia_positioning.R
+2. Gene density.R
+3. Phylostratigraphy.R
+4. UpSet_plots.R
+5. gProfPlot2.R
