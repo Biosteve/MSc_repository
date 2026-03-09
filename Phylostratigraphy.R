@@ -1,25 +1,3 @@
-setwd("D:/Dropbox/DUTh/Thesis/SF") #laptop
-#setwd("C:/Users/User/Dropbox/DUTh/Thesis/SF") #PC
-
-library(dplyr)
-library(data.table)
-library(tidyr)
-library(tidyverse)
-library(ggplot2)
-library(ggrepel)
-library(ggpubr)
-library(ggpval)
-library(nortest)
-library(Homo.sapiens)
-library(GenomicRanges)
-library(readr)
-library(grid)
-library(ComplexHeatmap)
-library(UpSetR)
-library(extrafont)
-library(writexl)
-library(RColorBrewer)
-
 ##Phylostratigraphy##
 
 Phylo_data<-read.table("HSapiens_Phylostratigraphy_Genes_Annotated_hg19coords.bed")
@@ -32,7 +10,6 @@ unique(Phylo_data$V9) # Gives 16 species
 colnames(Phylo_data)=c("chr", "startPOS", "endPOS", "Gene", "+/-", "Ensembl", "NCBI_Gene", "Spec_No", "Species")
 
 ## Rename the columns // subset based on species // Find the genes in each one 
-
 LUCA_set <- Phylo_data[Phylo_data$"Species" == 'LUCA',]
 Sapiens_set <- Phylo_data[Phylo_data$"Species" == 'HomoSapiens',]
 Eutheria_set <- Phylo_data[Phylo_data$"Species" == 'Eutheria',]
@@ -49,95 +26,6 @@ Bilateria_set <- Phylo_data[Phylo_data$"Species" == 'Bilateria',]
 Euarchontoglires_set <- Phylo_data[Phylo_data$"Species" == 'Euarchontoglires',]
 Opisthokonta_set <- Phylo_data[Phylo_data$"Species" == 'Opisthokonta',]
 Catarrhini_set <- Phylo_data[Phylo_data$"Species" == 'Catarrhini',]
-
-## Function for automated subset
-# 
-# subset_by_column <- function (data, column, value){
-#         data[data[[column]] == value,]
-# }
-# 
-# Metazoa_set=subset_by_column(Phylo_data, 'V9', 'Metazoa')
-
-##Use HomoSapiens, with small number as a template for the rest species##
-
-
-## Must become a function to reduce the derivatives and
-## automate the final result
-
-## For Homo Sapiens ##
-
-# Sapiens_set2 <- Sapiens_set %>% inner_join(Average_0, by = "Gene")
-# Sapiens_set2 <- Sapiens_set2[, -c(10:19)]
-# colnames(Sapiens_set2)[colnames(Sapiens_set2) == "average"] <- "Average_0"
-# 
-# Sapiens_set3 <- Sapiens_set2 %>% inner_join(Average_1, by = "Gene")
-# Sapiens_set3 <- Sapiens_set3[, -c(11:20)]
-# colnames(Sapiens_set3)[colnames(Sapiens_set3) == "average"] <- "Average_1"
-# 
-# Sapiens_set4 <- Sapiens_set3 %>% inner_join(Average_7, by = "Gene")
-# Sapiens_set4 <- Sapiens_set4[, -c(12:21)]
-# colnames(Sapiens_set4)[colnames(Sapiens_set4) == "average"] <- "Average_7"
-# 
-# Sapiens_set4 <- na.omit(Sapiens_set4) #removes rows with NaNs
-# 
-# graphing_SS4_0<- ggplot(Sapiens_set4, aes(x=Gene, y=Average_0, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_SS4_1<- ggplot(Sapiens_set4, aes(x=Gene, y=Average_1, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_SS4_7<- ggplot(Sapiens_set4, aes(x=Gene, y=Average_7, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# 
-# ggarrange(graphing_SS4_0, graphing_SS4_1, graphing_SS4_7, ncol =3 , nrow = 1)
-
-
-# Sapiens_tibble <- as_tibble(Sapiens)
-# Sapiens_tibble %>% group_by(chr.x) %>% summarise(n = n())
-
-
-## For LUCA ##
-# 
-# LUCA_set2 <- LUCA_set %>% inner_join(Average_0, by = "Gene")
-# LUCA_set2 <- LUCA_set2[, -c(10:19)]
-# colnames(LUCA_set2)[colnames(LUCA_set2) == "average"] <- "Average_0"
-# 
-# LUCA_set3 <- LUCA_set2 %>% inner_join(Average_1, by = "Gene")
-# LUCA_set3 <- LUCA_set3[, -c(11:20)]
-# colnames(LUCA_set3)[colnames(LUCA_set3) == "average"] <- "Average_1"
-# 
-# LUCA_set4 <- LUCA_set3 %>% inner_join(Average_7, by = "Gene")
-# LUCA_set4 <- LUCA_set4[, -c(12:21)]
-# colnames(LUCA_set4)[colnames(LUCA_set4) == "average"] <- "Average_7"
-# 
-# LUCA_set4 <- na.omit(LUCA_set4) #removes rows with NaNs
-
-# 
-# graphing_LS4_0<- ggplot(LUCA_set4, aes(x=Gene, y=Average_0, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_LS4_1<- ggplot(LUCA_set4, aes(x=Gene, y=Average_1, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_LS4_7<- ggplot(LUCA_set4, aes(x=Gene, y=Average_7, color=Gene)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Testing") + labs(x= "Gene", y="Mean Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# 
-# ggarrange(graphing_LS4_0, graphing_LS4_1, graphing_LS4_7, ncol =3 , nrow = 1)
-# 
-# LUCA_tibble <- as_tibble(LUCA)
-# LUCA_tibble %>% group_by(chr.x) %>% summarise(n = n()) %>% print(n=Inf)
-
-
-## For Mammalia ##
-# 
-# Mammalia_set2 <- Mammalia_set %>% inner_join(Average_0, by = "Gene")
-# Mammalia_set2 <- Mammalia_set2[, -c(10:19)]
-# colnames(Mammalia_set2)[colnames(Mammalia_set2) == "average"] <- "Average_0"
-# 
-# Mammalia_set3 <- Mammalia_set2 %>% inner_join(Average_1, by = "Gene")
-# Mammalia_set3 <- Mammalia_set3[, -c(11:20)]
-# colnames(Mammalia_set3)[colnames(Mammalia_set3) == "average"] <- "Average_1"
-# 
-# Mammalia_set4 <- Mammalia_set3 %>% inner_join(Average_7, by = "Gene")
-# Mammalia_set4 <- Mammalia_set4[, -c(12:21)]
-# colnames(Mammalia_set4)[colnames(Mammalia_set4) == "average"] <- "Average_7"
-# 
-# Mammalia_set4 <- na.omit(Mammalia_set4) #removes rows with NaNs
-# 
-# 
-# Mammalia_tibble <- as_tibble(Mammalia)
-# Mammalia_tibble %>% group_by(chr.x) %>% summarise(n = n()) %>% print(n=Inf)
-
 
 ## Functioning & Sub-setting 
 
@@ -222,7 +110,6 @@ Catarrhini <- subsetting(Catarrhini_set)
 Catarrhini_tibble <- as_tibble(Catarrhini)
 Catarrhini_tibble %>% group_by(chr.x) %>% summarise(n = n()) %>% print(n=Inf)
 
-
 ##============================================================================##
 
 ## Check for chrs in Sapiens
@@ -239,18 +126,12 @@ LUCA_sum <- LUCA %>% group_by(chr.x) %>%
         summarise(across(c(Average_0, Average_1, Average_7, Total_average), mean), .groups = 'drop') %>%
         as.data.frame()
 
-#write_xlsx(LUCA_sum, 'LUCA_sum_data.xlsx')
-
-
 ## Check for chrs in Mammalia
 
 Mammalia_sum <- Mammalia %>% group_by(chr.x) %>%
         filter(chr.x != "NA") %>%
         summarise(across(c(Average_0, Average_1, Average_7, Total_average), mean), .groups = 'drop') %>%
         as.data.frame()
-
-#write_xlsx(Mammalia_sum, 'Mammalia_sum_data.xlsx')
-
 
 ## Check for chrs in Eutheria
 
@@ -611,9 +492,6 @@ ggsave("high_res_final_plot_Mammalia.tiff",
        width = 15, height = 8,units = 'in', dpi = 900, device = 'tiff',
        compression = 'lzw', bg='white')
 
-
-
-#gia overall graph x= "Chromosomes", y="Distance from Center"
 
 # Eutheria graphs
 
@@ -1728,7 +1606,7 @@ ggsave("high_res_final_plot_Catarrhini.tiff",
        width = 15, height = 8,units = 'in', dpi = 900, device = 'tiff',
        compression = 'lzw', bg='white')
 
-# first we create the data frame for the heatmap
+# Create the data frame for the heatmap
 
 Phylo_sum <- data.frame(chr.x = c('chr1', 'chr2', 'chr3', 'chr4', 'chr5',
                                   'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 
@@ -1866,37 +1744,9 @@ Phylo_sum_7 <- Phylo_sum_7[-4,]
 Phylo_sum_7 <- Phylo_sum_7[-7,]
 Phylo_sum_7 <- Phylo_sum_7[-21,]
 
-# TEST 1
-# 
-# H_0 <- heatmap(as.matrix(Phylo_sum_0), scale = 'column', col = heat.colors(256), 
-#         main = "Species", Rowv = NA, Colv = NA)
-# 
-# H_1 <- heatmap(as.matrix(Phylo_sum_1), scale = 'column', col = heat.colors(256), 
-#         main = "Species", Rowv = NA, Colv = NA)
-# 
-# H_7 <- heatmap(as.matrix(Phylo_sum_7), scale = 'column', col = heat.colors(256), 
-#         main = "Species", Rowv = NA, Colv = NA)
-# 
-# 
-# # TEST 2 - no clustering
-# 
-# pheatmap(as.matrix(Phylo_sum_0), scale = "none", cluster_rows = FALSE, cluster_cols = FALSE,
-#          fontsize_row = 5, annotation_names_col = FALSE,
-#          display_numbers = TRUE, number_format = "%.2f", height = 12, width = 6)
-# 
-# pheatmap(as.matrix(Phylo_sum_1), scale = "none", cluster_rows = FALSE, cluster_cols = FALSE,
-#          fontsize_row = 5, annotation_names_col = FALSE,
-#          display_numbers = TRUE, number_format = "%.2f", height = 12, width = 6)
-# 
-# pheatmap(as.matrix(Phylo_sum_7), scale = "none", cluster_rows = FALSE, cluster_cols = FALSE,
-#          fontsize_row = 5, annotation_names_col = FALSE,
-#          display_numbers = TRUE, number_format = "%.2f", height = 12, width = 6)
-
-
-# TEST 3 - with clustering in both rows & columns
+# Clustering
 
 my_colors <- colorRampPalette(rev(brewer.pal(n = 7, name = "RdYlBu")))(100)
-
 
 
 col_names <- c("LUCA", "Mammalia", "H. sapiens", "Eutheria", "Eukaryota",
@@ -1998,3 +1848,4 @@ pheatmap(as.matrix(Phylo_sum_7),
 )
 
 dev.off()
+
