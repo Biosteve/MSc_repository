@@ -1,29 +1,3 @@
-# setwd("D:/Dropbox/DUTh/Thesis/SF") #laptop
-setwd("C:/Users/User/Dropbox/DUTh/Thesis/SF") #PC
-
-library(dplyr)
-library(data.table)
-library(tidyr)
-library(tidyverse)
-library(ggplot2)
-library(ggrepel)
-library(ggpubr)
-library(ggpval)
-library(nortest)
-library(Homo.sapiens)
-library(GenomicRanges)
-library(readr)
-library(grid)
-library(ComplexHeatmap)
-library(UpSetR)
-library(extrafont)
-library(writexl)
-library(RColorBrewer)
-
-
-#library(TxDb.Hsapiens.UCSC.hg38.knownGene)
-#library(GenomicRanges)
-
 
 ##Data_read##
 
@@ -41,9 +15,6 @@ summary(data_read)
 colnames(data_read)=c("chr", "startPOS", "endPOS")
 
 
-#txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
-#human.genes <- genes(txdb)
-
 size <- data_read %>%
         mutate(size = endPOS - startPOS)
 
@@ -57,21 +28,13 @@ Genome_density <- Genome_size %>%
                reference = as.numeric(as.character(reference)),
                gen.den = (chr_len / reference)*100)
 
-## Den exei ginei swsto matcharisma sta ref sizes!!!!!
-
 # function to format the labels as `10^x expressions
 scientific_10 <- function(x){
         coeff <- x / 1e8
         parse(text=paste0(coeff, " %*% 10^8"))
                           }
 
-
-
 #Correlation gene density - chromosome length
-
-# plot(Genome_density$gen.den~Genome_density$ref_size, type='p', pch=20, col='dark red',
-#      las=1.5, ylab='Gene Density', xlab='Chromosome size', cex=1.5)
-# text(Genome_density$gen.den~Genome_density$ref_size, labels=Genome_density$chr, cex=0.8, pos=1) 
 
 plot_data <- Genome_density %>%
   filter(!chr %in% c('chr4', 'chr8', 'chrX')) %>%
@@ -127,15 +90,3 @@ ggsave("high_res_gen_den_plot.tiff",
        path = "C:/Users/User/Dropbox/DUTh/Thesis/SF/hgh_res",
        width = 15, height = 8, 
        units = 'in', dpi = 900, device = 'tiff', compression = 'lzw')
-
-
-
-
-#Since no linear, we do Perason, Spearman or Kendall correlation!? -->
-# which one fits better?
-
-cor.test(Genome_density$gen.den, Genome_density$ref_size, method='spearman')
-
-cor.test(Genome_density$gen.den, Genome_density$ref_size, method='kendall')
-
-cor.test(Genome_density$gen.den, Genome_density$ref_size, method='pearson')
