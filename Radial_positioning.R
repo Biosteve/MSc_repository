@@ -1,42 +1,9 @@
-setwd("D:/Dropbox/DUTh/Thesis/SF") #laptop
-#setwd("C:/Users/User/Dropbox/DUTh/Thesis/SF") #PC
-
-
-library(dplyr)
-library(data.table)
-library(tidyr)
-library(tidyverse)
-library(ggplot2)
-library(ggrepel)
-library(ggpubr)
-library(ggpval)
-library(nortest)
-library(Homo.sapiens)
-library(GenomicRanges)
-library(readr)
-library(grid)
-library(ComplexHeatmap)
-library(UpSetR)
-library(extrafont)
-library(writexl)
-library(RColorBrewer)
-
-
 ##Data_0##
 data_0<-read.table("d0_model_ladatlas_vs_allGenes.bed")
 
 summary(data_0)
 test_0<-data_0[1:8]
 sum(is.na(test_0)) 
-
-# test_0<-test_0 %>% mutate(newV6=V6**2)
-# test_0<-test_0 %>% mutate(newV7=V7**2)
-# test_0<-test_0 %>% mutate(newV8=V8**2)
-# test_0<-test_0 %>% mutate(sum=newV6+newV7+newV8)
-# test_0<-test_0 %>% mutate(dist=sqrt(sum))
-
-# to make it in a for loop! // να υπολογίζει αυτόματα για V6-V8 και μετά να υπολογίζει το sqrt
-
 
 calc_Dist <- function(test_0){
         test_0<-test_0 %>% mutate(sum=V6**2+V7**2+V8**2)
@@ -61,7 +28,6 @@ SisA_0=Subset_sis(Dist_0)$A
 SisB_0=Subset_sis(Dist_0)$B
 summary(SisA_0$Dist)
 summary(SisB_0$Dist)
-
 
 
 ##Data_1##
@@ -163,51 +129,21 @@ graphing_7<- ggplot(Dist_7, aes(x=Sis, y=Dist, fill=Sis)) +
 
 ggarrange(graphing_0, graphing_1, graphing_7, ncol =3 , nrow = 1, common.legend = TRUE, legend='bottom')
 
-##Create datasets that contain only NAs and save them (need the function to do it)
+##Create datasets that contain only NAs
 
 OnlyNA_d1<- test_1 %>% filter_all(any_vars(is.na(.)))
 OnlyNA_d7<- test_7 %>% filter_all(any_vars(is.na(.)))
 
-
-##Using unique, I can examine what values are contained within this datasets
-
-unique(OnlyNA_d1$V1) #--> chr8
-unique(OnlyNA_d1$V5) #--> A
-unique(OnlyNA_d7$V1) #--> chr4, chrX
-unique(OnlyNA_d7$V5) #--> B
-
 ##What percentage of the total values are the NAs?
 
 D1_chr8<-subset(test_1, V1=='chr8') ## creates a dataset with only the chr8
-table(D1_chr8$V5) # 2386 rows (50%) are missing values and only SiS_A
+table(D1_chr8$V5) 
 D7_chr4<-subset(test_7, V1=='chr4') ## creates a dataset with only the chr4
-table(D7_chr4$V5) # 2510 rows (50%) are missing values and only SiS_B
+table(D7_chr4$V5) 
 D7_chrX<-subset(test_7, V1=='chrX') ## creates a dataset with only the chrX
-table(D7_chrX$V5) # 2375 rows (50%) are missing values and only SiS_B
+table(D7_chrX$V5) 
 
-##How to merge common data from the 3 data_sets?? combine <-cbind(d0, d1, d7)
- #If exclude all the Chr data that have NAs, then we will work with 101,700 genes
- # and we will go w/o chr4,8,X!!!
- # function that creates a new dataset w/o the chr4,8,X!!
-
-# Dist_0_NA<-subset(Dist_0, chr!= 'chrX')
-# Dist_0_NA<-subset(Dist_0_NA, chr!= 'chr4')
-# Dist_0_NA<-subset(Dist_0_NA, chr!= 'chr8')
-# 
-# unique(Dist_0_NA$chr) ## You need 101700 rows // Check whether the chr are excluded
-# 
-# Dist_1_NA<-subset(Dist_1, chr!= 'chrX')
-# Dist_1_NA<-subset(Dist_1_NA, chr!= 'chr4')
-# Dist_1_NA<-subset(Dist_1_NA, chr!= 'chr8')
-# 
-# unique(Dist_1_NA$chr) ## You need 101700 rows // Check whether the chr are excluded
-# 
-# Dist_7_NA<-subset(Dist_7, chr!= 'chrX')
-# Dist_7_NA<-subset(Dist_7_NA, chr!= 'chr4')
-# Dist_7_NA<-subset(Dist_7_NA, chr!= 'chr8')
-
-
-unique(Dist_7_NA$chr) ## You need 101700 rows // Check whether the chr are excluded
+unique(Dist_7_NA$chr) 
 
 ##create a function that creates the Dist_X_NA datasets!
 
@@ -245,6 +181,7 @@ SisA_7_NA=Subset_sis(Dist_7_NA)$A
 SisB_7_NA=Subset_sis(Dist_7_NA)$B
 summary(SisA_7_NA$Dist)
 summary(SisB_7_NA$Dist)
+
 
 # graphs with only the common chrs in all 3 datasets
 
@@ -386,11 +323,6 @@ graphing_7_NA_chr<- ggplot(Dist_7_NA, aes(x=chr, y=Dist, fill=Sis)) +
               text = element_text(family = "serif", face='bold'), 
               panel.background = element_blank())
 
-
-# graphing_0_NA_chr<- ggplot(Dist_0_NA, aes(x=chr, y=Dist, color=Sis)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Mean_Sis_Dist_0_NA") + labs(x= "Sis", y="Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_1_NA_chr<- ggplot(Dist_1_NA, aes(x=chr, y=Dist, color=Sis)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Mean_Sis_Dist_1_NA") + labs(x= "Sis", y="Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-# graphing_7_NA_chr<- ggplot(Dist_7_NA, aes(x=chr, y=Dist, color=Sis)) + scale_y_continuous(limits = c(0,6)) + geom_boxplot(alpha=1) + labs(title="Mean_Sis_Dist_7_NA") + labs(x= "Sis", y="Distance from Center") + theme(axis.line.x = element_line(linewidth = 0.5, colour = "black"), legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(), plot.title = element_text(family = "Calibri"), text = element_text(family = "Calibri"))
-
 combined_plot_Dist_NA <- ggarrange(graphing_0_NA_chr, graphing_1_NA_chr, graphing_7_NA_chr,ncol = 1, nrow = 3, common.legend = TRUE, legend='bottom')
 
 final_plot_Dist_NA <- annotate_figure(
@@ -407,55 +339,6 @@ ggsave("high_res_final_plot_Dist_NA.tiff",
        width = 15, height = 8,units = 'in', dpi = 900, device = 'tiff',
        compression = 'lzw', bg='white')
 
-
-# To examine whether genes have different behavior? Check genes based on chr?
-
-# ##Dataset_0 #Does the data follow normal distribution.??
-# 
-# Test_0_SisA<- which(Dist_0_NA$Sis=="A")
-# Test_0_SisB<- which(Dist_0_NA$Sis=="B")
-# 
-# t.test(Dist_0_NA$Dist[Test_0_SisA], Dist_0_NA$Dist[Test_0_SisB], conf.level = 0.95)
-# 
-# ##Dataset_1
-# 
-# Test_1_SisA<- which(Dist_1_NA$Sis=="A")
-# Test_1_SisB<- which(Dist_1_NA$Sis=="B")
-# 
-# t.test(Dist_1_NA$Dist[Test_1_SisA], Dist_1_NA$Dist[Test_1_SisB], conf.level = 0.95)
-# 
-# ##Dataset_7
-# 
-# Test_7_SisA<- which(Dist_7_NA$Sis=="A")
-# Test_7_SisB<- which(Dist_7_NA$Sis=="B")
-# 
-# t.test(Dist_7_NA$Dist[Test_7_SisA], Dist_7_NA$Dist[Test_7_SisB], conf.level = 0.95)
-
-# Human Genome Assembly GRCh38.p14 - For Chromosome lengths
-
-# Creating a new dataset to calculate the average value of each gene
-# between the two sis for each timepoint
-
-# AverageSIS.0 <- cbind(SisA_0, SisB_0)
-# AverageSIS_A0 <- AverageSIS.0[-c(6, 7, 8, 11, 12, 13, 14, 15, 17, 18, 19, 22)]
-# AverageSIS_0 <- AverageSIS_A0 %>% mutate(mean=( Dist+Dist.1)/2)
-# AverageSIS_0 <- AverageSIS_0 %>% rename(Sis.A = Sis, Sum.A = sum, Dist.A = Dist, Sis.B = Sis.1, Sum.B = sum.1, Dist.B = Dist.1)
-# 
-# 
-# AverageSIS.1 <- cbind(SisA_1, SisB_1)
-# AverageSIS_A1 <- AverageSIS.1[-c(6, 7, 8, 11, 12, 13, 14, 15, 17, 18, 19, 22)]
-# AverageSIS_1 <- AverageSIS_A1 %>% mutate(mean=( Dist+Dist.1)/2)
-# AverageSIS_1 <- AverageSIS_1 %>% rename(Sis.A = Sis, Sum.A = sum, Dist.A = Dist, Sis.B = Sis.1, Sum.B = sum.1, Dist.B = Dist.1)
-# 
-# 
-# AverageSIS.7 <- cbind(SisA_7, SisB_7)
-# AverageSIS_A7 <- AverageSIS.7[-c(6, 7, 8, 11, 12, 13, 14, 15, 17, 18, 19, 22)]
-# AverageSIS_7 <- AverageSIS_A7 %>% mutate(mean=( Dist+Dist.1)/2)
-# AverageSIS_7 <- AverageSIS_7 %>% rename(Sis.A = Sis, Sum.A = sum, Dist.A = Dist, Sis.B = Sis.1, Sum.B = sum.1, Dist.B = Dist.1)
-
-
-
-# To create a function that does all the above
 
 Average <-function(x, y, z, w){
         x <- cbind(y, z)
@@ -496,18 +379,6 @@ Average_0 <- filtered_Average_0
 Average_1 <- filtered_Average_1
 Average_7 <- filtered_Average_7
 
-# Average_All <- rbind(Average_0, Average_1, Average_7)
-
-#Pivot.of.average <- Average_All %>% group_by(chr) %>% summarise(Average.0 = mean(average), SD.0 = sd(average),Average.1 = mean(average.1), SD.1 = sd(average.1), Average.7 = mean(average.7), SD.7 = sd(average.7))
-
-# ggplot(data=Average_All) + geom_boxplot(aes(timepoint, average, color=timepoint)) +
-#         scale_fill_manual(values = T) +
-#         facet_wrap(~chr) +
-#         theme_minimal()
-# 
-# Average_sub <- subset(Average_All, select = c(chr, Dist.A, Dist.B, timepoint))
-# Average_sub <- na.omit(Average_sub)
-
 Sum_d0 <- summarise(Average_0, .by = chr, mean.SiSa = mean(Dist.A), mean.SiSb = mean(Dist.B), timepoint)
 Sum_d1 <- summarise(Average_1, .by = chr, mean.SiSa = mean(Dist.A), mean.SiSb = mean(Dist.B), timepoint)
 Sum_d7 <- summarise(Average_7, .by = chr, mean.SiSa = mean(Dist.A), mean.SiSb = mean(Dist.B), timepoint)
@@ -519,7 +390,6 @@ Sum_All <- na.omit(Sum_All)
 
 Sum_All <- Sum_All[, !names(Sum_All) %in% c("chr.1", "chr.7")]
 
-
 ##Calculate the differences between the two Sis
 
 Group_All <- Sum_All %>% group_by(chr) %>%
@@ -530,5 +400,3 @@ Group_All <- Sum_All %>% group_by(chr) %>%
 ALL <- merge(Group_All, Genome_density, by='chr')
 
 ALL <- ALL[, -c(2, 3, 4, 5, 6, 7, 15, 16)]
-    
-write_xlsx(ALL, 'ALL_data.xlsx')
