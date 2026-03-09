@@ -1,30 +1,6 @@
-# setwd("D:/Dropbox/DUTh/Thesis/SF") #laptop
-setwd("C:/Users/User/Dropbox/DUTh/Thesis/SF") #PC
-
-library(dplyr)
-library(data.table)
-library(tidyr)
-library(tidyverse)
-library(ggplot2)
-library(ggrepel)
-library(ggpubr)
-library(ggpval)
-library(nortest)
-library(Homo.sapiens)
-library(GenomicRanges)
-library(readr)
-library(grid)
-library(ComplexHeatmap)
-library(UpSetR)
-library(extrafont)
-library(writexl)
-library(RColorBrewer)
-
 #===============================================================================
 
-# remove the data that appear more than 4 times in Gene column in Average_0,1,7
-#Maybe 3 times should be the ideal? 
-# try with 2 times --> keep only the single ones
+# remove the data that appear more than 2 times in Gene column in Average_0,1,7
 
 filtered_Average_0 <- Average_0 %>%
         group_by(Gene) %>%
@@ -70,35 +46,6 @@ upset(Upset_low,
       nsets = 3, 
       nintersects = NA,
       order.by = "freq")
-
-#=============================================================================
-# 
-# upset_0_mid <- subset(filtered_Average_0, chr %in%
-#                               c('chr5', 'chr10', 'chr14', 'chr15', 'chr16'),
-#                       select = c(Gene))
-# 
-# upset_1_mid <- subset(filtered_Average_1, chr %in% 
-#                               c('chr1', 'chr2', 'chr22'),
-#                       select = c(Gene))
-# 
-# upset_7_mid <- subset(filtered_Average_7, chr %in% 
-#                               c('chr1', 'chr2', 'chr3', 'chr6', 'chr7', 'chr9',
-#                                 'chr15', 'chr17', 'chr20', 'chr22'),
-#                       select = c(Gene))
-# 
-# list_mid <- list(
-#         "Set_0_mid" = unlist(upset_0_mid),
-#         "Set_1_mid" = unlist(upset_1_mid),
-#         "Set_7_mid" = unlist(upset_7_mid)
-# )
-# 
-# Upset_mid <- fromList(list_mid)
-# 
-# upset(Upset_mid,
-#       sets = c("Set_0_mid", "Set_1_mid", "Set_7_mid"),
-#       nsets = 3, 
-#       nintersects = NA,
-#       order.by = "freq")
 
 #=============================================================================
 
@@ -156,29 +103,5 @@ upset(Upset_all,
       show.numbers = 'Yes',
       scale.intersections = 'identity', 
       scale.sets = 'identity')
-
-#==============================================================================
-# 
-# #Only the 0 & 7 day timepoints // best works with single copies of each gene!
-# 
-# list_0_7 <- list(
-#         "Set_0_low" = unlist(upset_0_low),
-#         "Set_7_low" = unlist(upset_7_low),
-#         "Set_0_mid" = unlist(upset_0_mid),
-#         "Set_7_mid" = unlist(upset_7_mid),
-#         "Set_0_high" = unlist(upset_0_high),
-#         "Set_7_high" = unlist(upset_7_high)
-# )
-# 
-# Upset_0_7 <- fromList(list_0_7)
-# 
-# upset(Upset_0_7,
-#       sets = c("Set_7_high", "Set_7_mid", "Set_7_low","Set_0_high", "Set_0_mid", "Set_0_low"),
-#       nsets = 6,
-#       nintersects = NA,
-#       keep.order = TRUE,
-#       show.numbers = 'Yes',
-#       scale.intersections = 'identity', 
-#       scale.sets = 'identity')
 
 
