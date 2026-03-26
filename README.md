@@ -17,8 +17,7 @@ An end-to-end data pipeline built in R to process and model longitudinal genomic
 * Feature Engineering & Statistics: Feature extraction and variance calculation.
 * Network Modeling: Identification of hidden regulatory patterns in a high-dimensional environment.
 
-📊 Key Visualizations
-  [HeatMap](output/Pheatmap_0days.tiff)
+📊 Key Visualizations :arrow_right: [HeatMap](output/Pheatmap_0days.tiff)
 
 🚀 How to Run
 To run the pipeline locally: Execute scripts in this order:
