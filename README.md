@@ -3,7 +3,7 @@ The code that was created and used for the results of my MSc thesis titled "Anal
 
 
 📌 Project Overview
-An end-to-end data pipeline built in R to process and model longitudinal genomic data, analyzing over 350,000 observations across 3 timepoints.
+* An end-to-end data pipeline built in R to process and model longitudinal genomic data, analyzing over 350,000 observations across 3 timepoints.
 
 💻 Tech Stack
 * Language: R
