@@ -20,7 +20,8 @@ The code that was created and used for the results of my MSc thesis titled "Anal
 📊 Key Visualizations :arrow_right: [HeatMap](output/Pheatmap_0days.tiff)
 
 🚀 How to Run
-:arrow_right: To run the pipeline locally: Execute scripts in this order:
+- To run the pipeline locally: Execute scripts in this order:
+- 
 1. Radia_positioning.R
 2. Gene density.R
 3. Phylostratigraphy.R
