@@ -30,5 +30,5 @@ To run the pipeline locally: Execute scripts in this order:
 6. gProfPlot2.R
 
 :bangbang:Data availability:bangbang:
-** The data that support the findings of this Thesis are available upon reasonable request
+- The data that support the findings of this Thesis are available upon reasonable request
 - Sample datasets are created for reproducible purposes 
